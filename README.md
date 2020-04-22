@@ -1,5 +1,8 @@
 # MavenEjercicios
 
+[![Build Status](https://travis-ci.org/ualhmis/mavenEjercicios.svg?branch=master)](https://travis-ci.org/ualhmis/mavenEjercicios)
+
+
 Recomendación de proceder en esta práctica:
 1. Clona este repositorio en tu PC, y prueba que se construya correctamente en tu Eclipse, ejecutando los goals __clean package__. Debes configurar correctamente JDK en tu Eclipse tal y como se explica en el guión. Aunque se recomienda JDK8, también funciona con JDK11. Para estar seguro de que todo ha ido bien, comprueba que se han ejecutado los tests y que en la carpeta `target/site/jacoco` se ha generado el informe de cobertura. Si no se así, el problema es de tu Eclipse: revisa la configuración de JDK.
 
