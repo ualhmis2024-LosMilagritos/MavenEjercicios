@@ -24,4 +24,4 @@ Si hay errores, el problema es de tu Eclipse: revisa la configuración de JDK.
 
 ![alt](images/site-spotbugs-include-xml.png)
 
-3. Pruébalo poco a poco, es decir, ejecutando  los goals que se indican en cada paso del guión.
+3. Pruébalo poco a poco, es decir, ejecutando  los goals que se indican en cada paso del guión. Para los informes de análisis estático de código, como __FindBugs__, comprobarás que al ejecutar `clean package findbugs:findbugs` se genera el informe en formato XML en el archivo `target/findbugsXml.xml`, pero no se genera informe en formato HTML. Si deseas visualizar el informe de __Findbugs__ en formato HTML debes ejecutar los goals `clean package site`.
