@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/ualhmis/mavenEjercicios.svg?branch=master)](https://travis-ci.org/ualhmis/mavenEjercicios)
 [![codecov](https://codecov.io/gh/ualhmis/mavenEjercicios/branch/master/graph/badge.svg)](https://codecov.io/gh/ualhmis/mavenEjercicios)
     
-
+## Instrucciones adicionales
 
 Recomendación de proceder en esta práctica:
 1. Clona este repositorio en tu PC, y prueba que se construya correctamente en tu Eclipse, ejecutando los goals `clean package`. 
@@ -25,3 +25,32 @@ Si hay errores, el problema es de tu Eclipse: revisa la configuración de JDK.
 ![alt](images/site-spotbugs-include-xml.png)
 
 3. Pruébalo poco a poco, es decir, ejecutando  los goals que se indican en cada paso del guión. Para los informes de análisis estático de código, como __FindBugs__, comprobarás que al ejecutar `clean package findbugs:findbugs` solamente se genera el informe en formato XML en el archivo `target/findbugsXml.xml`, pero no se genera informe en formato HTML. Si deseas visualizar el informe de __Findbugs__ en formato HTML debes ejecutar los goals `clean package site`. Lo mismo ocurre para __SpotBugs__: si deseas ejecutarlo "solo" debes lanzar los goals `clean package com.github.spotbugs:spotbugs-maven-plugin:spotbugs`, pero eso solo generará el archivo xml `target/spotbugsXml.xml`. El informe  HTML solamente se obtiene al lanzar el goal `site`.
+
+## FAQ - Solución de problemas - Troubleshooting
+
+1. Error en __javadoc__:
+
+    `Unable to find javadoc command: The environment variable JAVA_HOME is not correctly set. -> [Help 1].`
+
+    __Solución__: Añade manualmente la variable `JAVA_HOME` en la configuración de ejecución [así - stackoverflow](https://stackoverflow.com/a/36685840)
+
+2. Error en __javadoc__ por la versión de Java: 
+
+    __Solución__: Añade la versión de java en la configuración del plugin javadoc en el `pom.xml`
+
+```
+	<plugin>
+		<groupId>org.apache.maven.ugins</groupId>
+		<artifactId>maven-javadoc-plun</artifactId>
+		<version>3.2.0</version>
+		<configuration>
+			<source>8</source>
+		</configuration>			
+	</plugin>
+```
+
+3. Error en `site`:
+    
+    `Could not find resource '.../spotbugs-security-include.xml'. -> [Help 1]`
+
+    __Solución__: copia en tu proyecto los archivos `spotbugs-security-exclude.xml` y `spotbugs-security-include.xml` en la carpeta raiz de tu proyecto, al mismo nivel del `pom.xml`
