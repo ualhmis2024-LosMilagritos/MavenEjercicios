@@ -34,6 +34,13 @@ Si hay errores, el problema es de tu Eclipse: revisa la configuración de JDK.
 
     __Solución__: Añade manualmente la variable `JAVA_HOME` en la configuración de ejecución [así - stackoverflow](https://stackoverflow.com/a/36685840)
 
+    `JAVA_HOME` debe indicar la carpeta en la que Java JDK está instalado en tu PC. En Windows 10, busca en `C:\Program Files\Java\` y busca la versión concreta de JDK instalada, por ejemplo, si tienes instalado JDK8 será:
+
+        Correct! - C:\Program Files\Java\jdk1.8.0_211
+        Wrong    - C:\Program Files\Java\jdk1.8.0_211\bin
+        Wrong    - C:\Program Files\Java\jdk1.8.0_211\jre
+        Wrong    - C:\Program Files\Java\jre1.8.0_211\bin
+
 2. Error en __javadoc__ por la versión de Java: 
 
     __Solución__: Añade la versión de java en la configuración del plugin javadoc en el `pom.xml`
