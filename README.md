@@ -61,3 +61,25 @@ Si hay errores, el problema es de tu Eclipse: revisa la configuración de JDK.
     `Could not find resource '.../spotbugs-security-include.xml'. -> [Help 1]`
 
     __Solución__: copia en tu proyecto los archivos `spotbugs-security-exclude.xml` y `spotbugs-security-include.xml` en la carpeta raiz de tu proyecto, al mismo nivel del `pom.xml`
+
+4. Error de formatos `HTML,XML` en Dependecy Check: 
+
+![alt](images/error-formats-dependency-check.png)
+
+La solución es poner cada formato en su propia etiqueta `format`:
+
+````
+    <plugin>
+		<groupId>org.owasp</groupId>
+		<artifactId>dependency-check-maven</artifactId>
+		<version>5.3.2</version>
+		<configuration>
+			<skipTestScope>false</skipTestScope>
+			<formats>
+				<format>HTML</format>
+				<format>XML</format>
+			</formats> 
+		</configuration>
+        ...
+    </plugin>
+````     
