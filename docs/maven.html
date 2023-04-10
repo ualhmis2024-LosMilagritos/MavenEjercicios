@@ -438,6 +438,221 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
+}
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
+}
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sa {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
+}
+pre.rouge .si {
+  color: #d14;
+}
+pre.rouge .sx {
+  color: #d14;
+}
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
+}
+</style>
 </head>
 <body class="book toc2 toc-right doc">
 <div id="header">
@@ -452,7 +667,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel0">
 <li><a href="#_prerrequisitos">Prerrequisitos</a>
 <ul class="sectlevel1">
-<li><a href="#_configuración_del_utf_8_en_el_ide">Configuración del UTF-8 en el IDE</a></li>
+<li><a href="#_configuración_del_utf_8_en_el_ide">Configuración del UTF-8 en el IDE</a>
+<ul class="sectlevel2">
+<li><a href="#_eclipse">Eclipse</a></li>
+<li><a href="#_visual_studio_code">Visual Studio Code</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#_pasos_a_seguir">Pasos a seguir</a>
@@ -475,8 +695,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="quoteblock abstract">
 <blockquote>
-Maven
+<a href="https://maven.apache.org/what-is-maven.html">Maven</a> es una herramienta de construcción y gestión de dependencias para proyectos Java. Maven se encarga de la gestión del ciclo de vida del proyecto, incluyendo la compilación, la ejecución de los test, la generación de documentación, el empaquetado y la distribución del software. Además, proporciona un sistema de construcción estandarizado y una estructura de proyecto coherente, lo que hace que sea más fácil para los desarrolladores trabajar en proyectos grandes y complejos. Además, proporciona gestión de dependencias, es decir, permite que un proyecto pueda utilizar librerías de terceros sin tener que preocuparse de cómo se instalan, cómo se actualizan, etc. Pero Maven es mucho más que eso: el objetivo principal de es permitir que un desarrollador comprenda el estado completo de un esfuerzo de desarrollo en el menor tiempo posible. Para lograr este objetivo, Maven se ocupa de varias áreas:
 </blockquote>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Facilitar el proceso de construcción</em></p>
+</li>
+<li>
+<p><em>Proporcionar un sistema de construcción uniforme</em></p>
+</li>
+<li>
+<p><em>Proporcionar información de proyectos de calidad</em></p>
+</li>
+<li>
+<p><em>Fomentar mejores prácticas de desarrollo</em></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <div class="title">Objetivos</div>
@@ -494,6 +730,10 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <div class="sect1">
 <h2 id="_configuración_del_utf_8_en_el_ide">Configuración del UTF-8 en el IDE</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_eclipse">Eclipse</h3>
+<div class="exampleblock">
+<div class="content">
 <div class="paragraph">
 <p><span class="image"><img src="images/eclipse_2.png" alt="Eclipse"></span> Si estás usando Eclipse, no olvides configurar Eclipse para que utilice UTF-8 como codificación predeterminada: <em>Window &gt; Preferencies &gt; General &gt; Workspace &gt; Text file encoding &gt; Other &gt; UTF-8</em></p>
 </div>
@@ -502,6 +742,13 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <img src="images/eclipse-utf8.png" alt="Eclipse utf8">
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_visual_studio_code">Visual Studio Code</h3>
+<div class="exampleblock">
+<div class="content">
 <div class="paragraph">
 <p><span class="image"><img src="images/Visual_Studio_Code_icon.png" alt="VSCode"></span> Si usas VS Code para desarrollar en Java:</p>
 </div>
@@ -525,7 +772,10 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">   "java.debug.settings.vmArgs": "-Dfile.encoding=UTF-8"</code></pre>
+<pre class="rouge highlight"><code data-lang="json"><span class="w">   </span><span class="nl">"java.debug.settings.vmArgs"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-Dfile.encoding=UTF-8"</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -534,6 +784,8 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <div class="sect1">
 <h2 id="_convertir_a_proyecto_maven">1. Convertir a proyecto Maven</h2>
 <div class="sectionbody">
+<div class="exampleblock">
+<div class="content">
 <div class="paragraph">
 <p><span class="image"><img src="images/eclipse_2.png" alt="Eclipse"></span> Si en la actividad 5 habías partido del proyecto en GitHub, como ualhmis/junitEjercicios o ualhmis/hmis-coches, este paso y los dos siguientes ya están hechos. Simplemente debes comprobar que ya lo habíamos hecho en la actividad 5. Si, por el contrario, tu(s) proyecto(s) de la actividad 5 no están mavenizados, hazlo ahora:</p>
 </div>
@@ -548,6 +800,10 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <div class="paragraph">
 <p>Verás que se ha creado un nuevo archivo llamado <code>pom.xml</code> que es el que contiene la configuración de Maven para el proyecto.</p>
 </div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="content">
 <div class="paragraph">
 <p><span class="image"><img src="images/Visual_Studio_Code_icon.png" alt="VSCode"></span> Si usas VS Code para desarrollar en Java, haz lo siguiente:</p>
 </div>
@@ -560,23 +816,25 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
-	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-	&lt;groupId&gt;hmis-coches&lt;/groupId&gt;
-	&lt;artifactId&gt;hmis-coches&lt;/artifactId&gt;
-	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
-    &lt;build&gt;
-    	&lt;plugins&gt;
-			&lt;plugin&gt;
-				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
-				&lt;version&gt;3.11.0&lt;/version&gt;
-				&lt;configuration&gt;
-					&lt;release&gt;11&lt;/release&gt;
-				&lt;/configuration&gt;
-			&lt;/plugin&gt;
-        &lt;/plugins&gt;
-    &lt;/build&gt;
-&lt;/project&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">"http://maven.apache.org/POM/4.0.0"</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="na">xsi:schemaLocation=</span><span class="s">"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>hmis-coches<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>hmis-coches<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>0.0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;build&gt;</span>
+    	<span class="nt">&lt;plugins&gt;</span>
+			<span class="nt">&lt;plugin&gt;</span>
+				<span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+				<span class="nt">&lt;version&gt;</span>3.11.0<span class="nt">&lt;/version&gt;</span>
+				<span class="nt">&lt;configuration&gt;</span>
+					<span class="nt">&lt;release&gt;</span>11<span class="nt">&lt;/release&gt;</span>
+				<span class="nt">&lt;/configuration&gt;</span>
+			<span class="nt">&lt;/plugin&gt;</span>
+        <span class="nt">&lt;/plugins&gt;</span>
+    <span class="nt">&lt;/build&gt;</span>
+<span class="nt">&lt;/project&gt;</span></code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -585,29 +843,29 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <div class="ulist">
 <ul>
 <li>
-<p>project root</p>
+<p><code>project</code> root</p>
 </li>
 <li>
-<p>modelVersion - debe ser <code>4.0.0</code></p>
+<p><code>modelVersion</code> - debe ser <code>4.0.0</code></p>
 </li>
 <li>
-<p>groupId - identificador del grupo del proyecto.</p>
+<p><code>groupId</code> - identificador del grupo del proyecto.</p>
 </li>
 <li>
-<p>artifactId - identificador de artefacto (proyecto)</p>
+<p><code>artifactId</code> - identificador de artefacto (proyecto)</p>
 </li>
 <li>
-<p>version - version del artefacto bajo el grupo especificado</p>
+<p><code>version</code> - version del artefacto bajo el grupo especificado</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Los parámetros <code>groupId</code>, <code>artifactId</code>, y <code>version</code> forma el nombre completo de artefacto del proyecto (project&#8217;s fully qualified artifact name). Este nombre tiene la forma &lt;groupId&gt;:&lt;artifactId&gt;:&lt;version&gt;. En el ejemplo anterior, sería &#8220;hmis-coches.hmis-coches:0.0.1-SNAPSHOT&#8221;.</p>
+<p>Los parámetros <code>groupId</code>, <code>artifactId</code>, y <code>version</code> forma el nombre completo de artefacto del proyecto (project&#8217;s fully qualified artifact name). Este nombre tiene la forma <code>&lt;groupId&gt;:&lt;artifactId&gt;:&lt;version&gt;</code>. En el ejemplo anterior, sería <code>hmis-coches.hmis-coches:0.0.1-SNAPSHOT</code>.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>build - contiene la configuración de compilación del proyecto, y los plugins que se ejecutan durante la construcción del proyecto. En el ejemplo anterior, se configura el plugin <code>maven-compiler-plugin</code> para que compile con Java 11.</p>
+<p><code>build</code> - contiene la configuración de construcción del proyecto, y los plugins que se ejecutan durante la misma. En el ejemplo anterior, se configura el plugin <code>maven-compiler-plugin</code> para que compile con <strong>Java 11</strong>.</p>
 </li>
 </ul>
 </div>
@@ -617,20 +875,52 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <h2 id="_configurar_el_archivo_pom_xml">2. Configurar el archivo <code>pom.xml</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Configurar el proyecto con codificación UTF-8, y las carpetas donde están los fuentes y los tests:</p>
+<p>La estructura predeterminada de un proyecto Maven sigue una convención denominada "Standard Directory Layout" (Estructura de Directorios Estándar), que proporciona una forma coherente de organizar los archivos de un proyecto. Esta estructura se compone de los siguientes directorios y subdirectorios:</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>El directorio <code>src/main/java</code> contiene el código fuente principal del proyecto.</p>
+</li>
+<li>
+<p>El directorio <code>src/main/resources</code> contiene los recursos (archivos de configuración, archivos de propiedades, etc.) necesarios para que el proyecto se ejecute.</p>
+</li>
+<li>
+<p>El directorio <code>src/test/java</code> contiene los archivos de prueba del proyecto.</p>
+</li>
+<li>
+<p>El directorio <code>src/test/resources</code> contiene los recursos necesarios para las pruebas.</p>
+</li>
+<li>
+<p>El archivo <code>pom.xml</code> es el archivo de configuración de Maven que describe cómo se debe construir el proyecto, incluyendo las dependencias, plugins y otros detalles.</p>
+</li>
+<li>
+<p>El directorio <code>target</code> es donde Maven coloca los resultados de la construcción y el empaquetado del proyecto.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Si tu proyecto Java tiene otra estructura distinta a esta estructura de carpetas predeterminada, puedes modificarla en el archivo <code>pom.xml</code>. Por ejemplo, partiendo de la estructura de proyecto habitual en Eclipse, los fuentes están en la carpeta <code>src</code> y las clases con tests en la carpeta <code>test</code>.</p>
+</div>
+<div class="paragraph">
+<p>Para empezar, debes configurar el proyecto con <strong>codificación <code>UTF-8</code></strong>, y las carpetas donde están los fuentes y los tests:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-  &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
-&lt;/properties&gt;
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;properties&gt;</span>
+  <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+  <span class="nt">&lt;project.reporting.outputEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.reporting.outputEncoding&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
 
-&lt;build&gt;
-  &lt;sourceDirectory&gt;src&lt;/sourceDirectory&gt;
-  &lt;testSourceDirectory&gt;test&lt;/testSourceDirectory&gt;
+<span class="nt">&lt;build&gt;</span>
+  <span class="nt">&lt;sourceDirectory&gt;</span>src<span class="nt">&lt;/sourceDirectory&gt;</span>
+  <span class="nt">&lt;testSourceDirectory&gt;</span>test<span class="nt">&lt;/testSourceDirectory&gt;</span>
    ...
-&lt;/build&gt;</code></pre>
+<span class="nt">&lt;/build&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -639,28 +929,31 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <h2 id="_añadir_las_dependencias_a_junit5">3. Añadir las dependencias a JUnit5</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Añadir las dependencias a JUnit 5 (simplemente comprobar, ya lo habíamos hecho en la actividad 5):</p>
+<p>Maven proporciona gestión de dependencias, es decir, permite que un proyecto pueda utilizar librerías de terceros sin tener que preocuparse de cómo se instalan, cómo se actualizan, etc.  A partir de ahora, deberás configurar el archivo <code>pom.xml</code> para que incluya las dependencias necesarias para el proyecto.</p>
+</div>
+<div class="paragraph">
+<p>Añade las dependencias a JUnit 5 (simplemente comprobar, ya lo habíamos hecho en la actividad 5):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">	&lt;dependency&gt;
-		&lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
-		&lt;artifactId&gt;junit-jupiter-engine&lt;/artifactId&gt;
-		&lt;version&gt;5.9.2&lt;/version&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-		&lt;scope&gt;test&lt;/scope&gt;
-	&lt;/dependency&gt;
-	&lt;dependency&gt;
-		&lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
-		&lt;artifactId&gt;junit-jupiter-api&lt;/artifactId&gt;
-		&lt;version&gt;5.9.2&lt;/version&gt;
-		&lt;scope&gt;test&lt;/scope&gt;
-	&lt;/dependency&gt;
-   	&lt;dependency&gt;
-		&lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
-		&lt;artifactId&gt;junit-jupiter-params&lt;/artifactId&gt;
-		&lt;version&gt;5.9.2&lt;/version&gt;
-		&lt;scope&gt;test&lt;/scope&gt;
-	&lt;/dependency&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="xml">	<span class="nt">&lt;dependency&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.junit.jupiter<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>junit-jupiter-engine<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>5.9.2<span class="nt">&lt;/version&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+		<span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+	<span class="nt">&lt;/dependency&gt;</span>
+	<span class="nt">&lt;dependency&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.junit.jupiter<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>junit-jupiter-api<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>5.9.2<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+	<span class="nt">&lt;/dependency&gt;</span>
+   	<span class="nt">&lt;dependency&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.junit.jupiter<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>junit-jupiter-params<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>5.9.2<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+	<span class="nt">&lt;/dependency&gt;</span></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -671,9 +964,6 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="images/eclipse_2.png" alt="Eclipse"></span> En Eclipse, hay que eliminar JUnit del ClassPath del proyecto Eclipse</p>
-</div>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -682,7 +972,10 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 </td>
 <td class="content">
 <div class="paragraph">
-<p>En <strong>Eclipse</strong>, si en el proyecto aparecen errores de compilación tras añadir las dependencias a Junit en Maven, se debe <strong>actualizar el proyecto</strong>: sobre el proyecto, botón derecho, <em>Maven, Update Project</em>.</p>
+<p><span class="image"><img src="images/eclipse_2.png" alt="Eclipse"></span> En Eclipse, hay que eliminar JUnit del ClassPath del proyecto</p>
+</div>
+<div class="paragraph">
+<p>Si en el proyecto aparecen errores de compilación tras añadir las dependencias a Junit en Maven, se debe <strong>actualizar el proyecto</strong>: sobre el proyecto, botón derecho, <em>Maven, Update Project</em>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -699,8 +992,25 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <h2 id="_lanzar_los_test_desde_maven">4. Lanzar los test desde Maven</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Vamos a utilizar el ciclo de vida de  Maven (<a href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">Maven lifecycle</a>) para compilar/test/empaquetar el proyecto:</p>
+<p>Maven define un ciclo de vida (<a href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">Maven lifecycle</a>) para compilar/test/empaquetar el proyecto. El ciclo de vida de Maven es un conjunto predefinido de fases que describen el proceso de construcción y distribución de un proyecto. Cada fase representa una etapa específica en el ciclo de vida de construcción de un proyecto, y se ejecutan en un orden predefinido.</p>
 </div>
+<div class="paragraph">
+<p>Los <strong>goals</strong> de Maven son tareas específicas que se pueden ejecutar en un proyecto durante el proceso de construcción. Cada fase del ciclo de vida de Maven está compuesta por uno o más goals, y los goals se utilizan para realizar acciones específicas, como compilar el código fuente, ejecutar pruebas, empaquetar el proyecto, instalar el proyecto en el repositorio local de Maven, y desplegar el proyecto en un servidor remoto.</p>
+</div>
+<div class="paragraph">
+<p>Por ejemplo, en la fase <strong>compile</strong> del ciclo de vida de Maven, el goal principal es <code>compile</code>, que se utiliza para compilar el código fuente del proyecto y generar archivos <code>.class</code>. En la fase <strong>test</strong>, el goal principal es <code>test</code>, que se utiliza para ejecutar las pruebas unitarias del proyecto. En la fase <strong>package</strong>, el goal principal es <code>package</code>, que se utiliza para empaquetar el proyecto en un archivo <code>.jar</code> o <code>.war</code>. El goal <code>clean</code> se utiliza para limpiar el resultado de la construcción anterior, borrando en la carpeta <code>target</code>.</p>
+</div>
+<div class="paragraph">
+<p>En cada <em>goal</em> se ejecutan otros <em>goals</em> previos necesarios para que el actual se ejecute correctamente. Por ejemplo, al ejecutar <code>test</code>, Maven ejecuta previamente <code>compile</code> y <code>testCompile</code>. Del mismo modo, <code>package</code> ejecuta previamente los goals <code>compile</code>, <code>testCompile</code> y <code>test</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/mvn-plugins-package-goals.png" alt="maven-package-goal">
+</div>
+<div class="title">Figure 1. <a href="https://www.codetab.org/tutorial/apache-maven/maven-lifecycle-goals/">Maven lifecycle goals</a></div>
+</div>
+<div class="exampleblock">
+<div class="content">
 <div class="paragraph">
 <p><span class="image"><img src="images/eclipse_2.png" alt="Eclipse"></span> Normalmente hasta ahora siempre hemos ejecutado los tests de JUnit desde <strong>Eclipse</strong>, con la opción <em>Run As… JUnit test</em>. Ahora vamos a lanzar los test desde <strong>Maven</strong>: <em>Sobre el proyecto, Botón derecho, Run as… , Maven build</em>. En el campo Goals: <code>clean package</code></p>
 </div>
@@ -709,12 +1019,18 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <img src="images/maven-build-clean-package.png" alt="maven-build-clean-package">
 </div>
 </div>
+</div>
+</div>
+<div class="exampleblock">
+<div class="content">
 <div class="paragraph">
 <p><span class="image"><img src="images/Visual_Studio_Code_icon.png" alt="VSCode"></span> En VS Code, para lanzar los test desde Maven, desde el terminal ejecuta:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">mvn clean package</code></pre>
+<pre class="rouge highlight"><code data-lang="bash">mvn clean package</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="admonitionblock warning">
@@ -780,7 +1096,6 @@ Recuerda que para ejecutar los test con Maven desde el terminal, debes tener ins
 <div id="footer">
 <div id="footer-text">
 Version 2.0<br>
-Last updated 2023-04-05 13:44:09 +0200
 </div>
 </div>
 <style>
