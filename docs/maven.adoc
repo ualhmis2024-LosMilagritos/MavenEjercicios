@@ -714,15 +714,11 @@ Actualiza la configuración del plugin JavaDoc en el archivo `pom.xml` para que 
             <version>2.1.0</version>
           </docletArtifact>
           <additionalOptions>
-            <!-- -umlImageFormat (svg | svg_img | png | eps | none) -->
 			<!-- <additionalOption>-umlImageFormat svg_img,png</additionalOption> -->
 			<additionalOption>-umlImageFormat svg_img</additionalOption>
 			<additionalOption>-private</additionalOption>
 			<!-- <additionalOption>-createPumlFiles</additionalOption> -->
 			<additionalOption>-umlExcludedTypeReferences</additionalOption> <!-- añade metodos toString() y equals() -->
-			<!-- <additionalOption>-umlJavaBeanPropertiesAsFields</additionalOption> -->
-			<!-- <additionalOption>-umlCustomDirective "skinparam classBackgroundColor 
-					LightYellow"</additionalOption> -->
           </additionalOptions>
         </configuration>*
       </plugin>
