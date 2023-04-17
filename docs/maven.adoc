@@ -79,7 +79,7 @@ COLOCA A CONTINUACIÓN LOS OBJETIVOS
 
 # Prerrequisitos
 
-El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de la actividad 05 - Pruebas Unitarias en JUnit.
+El guion de esta actividad está actualizado para JUnit 5. Para cada proyecto de la actividad 05 - Pruebas Unitarias en JUnit.
 
 ## Configuración del UTF-8 en el IDE
 
@@ -245,6 +245,11 @@ Los *goals* de Maven son tareas específicas que se pueden ejecutar en un proyec
 
 Por ejemplo, en la fase *compile* del ciclo de vida de Maven, el goal principal es `compile`, que se utiliza para compilar el código fuente del proyecto y generar archivos `.class`. En la fase *test*, el goal principal es `test`, que se utiliza para ejecutar las pruebas unitarias del proyecto. En la fase *package*, el goal principal es `package`, que se utiliza para empaquetar el proyecto en un archivo `.jar` o `.war`. El goal `clean` se utiliza para limpiar el resultado de la construcción anterior, borrando en la carpeta `target`.
 
+[WARNING]
+====
+La carpeta `target` *nunca* se guarda en el respositorio Git, ni se sube a GitHub. Git ignora está carpeta porque se encuentra dentro del archivo `.gitignore`.
+====
+
 En cada _goal_ se ejecutan otros _goals_ previos necesarios para que el actual se ejecute correctamente. Por ejemplo, al ejecutar `test`, Maven ejecuta previamente `compile` y `testCompile`. Del mismo modo, `package` ejecuta previamente los goals `compile`, `testCompile` y `test`.
 
 .https://www.codetab.org/tutorial/apache-maven/maven-lifecycle-goals/[Maven lifecycle goals]
@@ -296,12 +301,12 @@ Si en la consola aparece el siguiente error:
 
  No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
 
-En Eclipse:_Window -> Preferences -> Java -> Installed JREs_ Comprueba que está marcada una instalación de JDK en lugar de un JRE. 
+En Eclipse: _Window -> Preferences -> Java -> Installed JREs_. Comprueba que está marcada una instalación de JDK en lugar de un JRE. 
  
 Si no tuvieses instalado un JDK, debes instalarlo. Recomendable *JDK 11*. Tras instalarlo, debes reiniciar Eclipse y añadirlo a la lista de Installed JREs.
 ====
 
-## Añadir el plugin de Surefire
+## Surefire plugin
 
 Surefire es el plugin de Maven que se encarga de ejecutar los tests unitarios. Por defecto, Surefire busca los tests en el directorio `src/test/java` y los ejecuta. Si no se encuentra ningún test, no se ejecuta ninguno. Por eso, si no se ejecutan los tests, es porque Maven no los encuentra.
 
@@ -322,21 +327,510 @@ Añade esta configuración del plugin al `pom.xml`
 </build>
 ----
 
-https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit-platform.html
 
-De forma predeterminada, Surefire Plugin automáticamente incluye todos los archivos de pruebas que cumplen las siguientes reglas de nomenclatura:
-•	"**/Test*.java" – incluye todos los archivos .java que empiezan por "Test".
-•	"**/*Test.java" - incluye todos los archivos .java que finalizan en "Test".    
-•	 "**/*Tests.java" – incluye todos archivos .java que finalizan en "Tests".
-•	"**/*TestCase.java" - incluye todos archivos .java que finalizan en "TestCase".
-Si tus clases de test no siguen esta nomenclatura, configura el plugin para especificar que incluir: 
+De forma predeterminada, Surefire incluye automáticamente todos los archivos de pruebas que cumplen las siguientes reglas de nomenclatura:
+
+* `\**/Test*.java`, incluye todos los archivos .java que empiezan por `Test`.
+* `**/*Test.java`, archivos .java que finalizan en `Test`.    
+* `**/*Tests.java`, archivos .java que finalizan en `Tests`.
+* `**/*TestCase.java`, archivos .java que finalizan en `TestCase`.
+
+Si tus clases de test no siguen esta nomenclatura, debes configurar el plugin para especificar qué archivos debe incluir: 
+
+[source,xml]
+----
+...
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>3.0.0</version>
+		<configuration>
+            <includes>
+                <include>Sample.java</include>
+            </includes>
+		</configuration>
+	</plugin>
+...
+----
+
+Y si deseas excluir algún archivo de test, debes añadirlo a la lista de exclusiones:
+
+[source,xml]
+----
+
+...
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>3.0.0</version>
+		<configuration>
+            <excludes>
+              <exclude>**/TestCircle.java</exclude>
+              <exclude>**/TestSquare.java</exclude>
+            </excludes>
+          </configuration>
+	</plugin>
+...
+----
+
+NOTE: Más info en https://maven.apache.org/surefire/maven-surefire-plugin/examples/inclusion-exclusion.html[Inclusion/Exclusion of Tests]
+
+La siguiente https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit-platform.html#external-extensions-for-the-plugin[extensión] muestra en la consola una vista en forma de árbol de las pruebas unitarias . Esto está relacionado con las pruebas JUnit5: 
+
+[source,xml]
+----
+...
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-surefire-plugin</artifactId>
+		<version>3.0.0</version>
+		<dependencies>
+			<dependency>
+				<groupId>me.fabriciorby</groupId>
+				<artifactId>maven-surefire-junit5-tree-reporter</artifactId>
+				<version>0.1.0</version>
+			</dependency>
+		</dependencies>
+		<configuration>
+			<reportFormat>plain</reportFormat>
+			<consoleOutputReporter>
+				<disable>true</disable>
+			</consoleOutputReporter>
+			<statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter" />
+			<argLine>@{argLine} -Dfile.encoding=UTF-8</argLine>
+			<!-- -Dfile.encoding=UTF-8 necesario para que pasen los tests con UTF-8 -->		
+			<!-- @{argLine} necesario para Jacoco !!! -->		
+		</configuration>
+	</plugin>
+
+...
+----
 
 
-##
 
-##
+## Plugin de Cobertura
 
-##
+Para el cálculo de la cobertura desde Maven vamos a usar el plugin JaCoCo.
+
+[source,xml]
+----
+<project...>
+...
+<build>
+    <plugins>
+		<plugin>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.8</version>
+			<executions>
+				<execution>
+					<id>prepare-agent</id>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+				</execution>
+				<!-- attached to Maven test phase -->
+				<execution>
+					<id>report</id>
+					<phase>test</phase>
+					<goals>
+						<goal>report</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+</build>
+...
+</project>
+----
+
+Para llamar al cálculo de cobertura desde la línea de comandos, ejecuta el siguiente comando:
+
+ mvn clean package
+
+Para ver el informe de cobertura, abre el archivo `target/site/jacoco/index.html` con el navegador web.
+
+image::images/informe-jacoco.png[informe-jacoco]
+
+Puedes navegar y ver la cobertura linea a linea. Recuerda los colores:
+
+image::images/cobertura-resultados-ejercicio.png[cobertura-resultados-ejercicio]
+
+Puedes verificar que los resultados de la cobertura desde Maven con JaCoCo son iguales que los resultados de la cobertura obtenidos por el plugin EclEmma de Eclipse.
+
+
+## Verificar un valor mínimo de cobertura
+
+Además, se puede añadir una regla de verificación para que la construcción solamente de éxito si la cobertura es superior a un porcentaje mínimo. 
+
+[source,xml]
+----
+...
+			<!-- Add this checking: coverage >= 90% -->
+			<execution>
+				<id>jacoco-check</id>
+				<goals>
+					<goal>check</goal>
+				</goals>
+				<configuration>
+					<rules>
+						<rule>
+							<element>PACKAGE</element>
+							<limits>
+								<limit>
+									<counter>LINE</counter>
+									<value>COVEREDRATIO</value>
+									<minimum>0.9</minimum>
+								</limit>
+							</limits>
+						</rule>
+					</rules>
+				</configuration>
+			</execution>
+...
+----
+
+Si además quieres que se comprueben las reglas de verificación, ejecuta el siguiente los goals `clean` y `verify`:
+
+ mvn clean verify
+
+Si no se alcanza el mínimo, en este caso 90%, por consola se muestra el siguiente error: 
+
+image::images\jacoco-check-failure.png[JaCoco check failure]
+
+[NOTE]
+====
+Más info en https://dzone.com/articles/reporting-code-coverage-using-maven-and-jacoco-plu
+[Reporting Code Coverage Using Maven and JaCoCo Plugin]
+====
+
+
+## Análisis estático de Código
+
+Para mantener o aumentar la calidad de nuestro código debemos ayudarnos, entre otras herramientas, de técnicas de análisis estático de código que, básicamente, se encargan de buscar defectos en el código sin necesidad de que este se ejecute. En Java las más habituales son *Checkstyle*, *FindBugs* y *PMD*. 
+
+* https://maven.apache.org/plugins/maven-checkstyle-plugin/[Checkstyle] valida el estilo del código respecto al estilo oficial de Java. 
+* http://gleclaire.github.io/findbugs-maven-plugin/[FindBugs/Spotbugs] busca errores comunes.
+* https://maven.apache.org/plugins/maven-pmd-plugin/[PMD] valida reglas de construcción y compilación.
+
+
+### Site
+El plugin Maven Site genera un sitio web con documentación del proyecto. Se invoca con el goal: `site`. Hay que añadirlo en el bloque `build` y en el bloque `reporting` del `pom.xml`.
+
+[source,xml]
+----
+<project>
+  ...
+  <build>
+  ...
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-site-plugin</artifactId>
+		<version>4.0.0-M7</version>
+		<configuration>
+			<locales>es,en</locales>
+		</configuration>
+	</plugin>
+	  ...
+  </build>
+   <reporting>
+    <plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-site-plugin</artifactId>
+			<version>4.0.0-M7</version>
+			<configuration>
+				<locales>es,en</locales>
+			</configuration>
+		</plugin>
+        ...
+	</plugins>
+  </reporting>
+  ...
+</project>
+----
+
+### Checkstyle
+
+Para configurar estas 3 herramientas en Maven, dentro del `pom.xml` se añaden en el bloque `reporting` que se encarga de generar los informes de las herramientas de análisis estático de código. Utiliza el plugin `site` de Maven.
+
+[source,xml]
+----
+<project>
+  ...
+  </build>
+  <reporting>
+    <plugins>
+		...
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.1.1</version>
+        </plugin>
+        
+		<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+            <version>3.3.0</version>
+        </plugin>
+    </plugins>
+  </reporting>
+  ...
+</project>
+----
+Checkstyle se invoca simplemente con el goal: `checkstyle:checkstyle`
+
+Sin embargo, puesto que vamos a generar varios informes de análisis estático de código, y con el objetivo de que todos se generen correctamente, hay que llamar a los 3 plugins desde un único goal: `site`.	
+
+En `target/site/` se genera el archivo `index.html` que será el punto de inicio, y otro `checkstyle.html`.
+
+[NOTE]
+====
+Filtro de reglas: Checkstyle permite seleccionar una lista reglas, de archivos y rango de lineas que *no se incorporarán* al informe (conocido como https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/suppressions-filter.html#using-a-suppressions-filter[_suppressions filter_]).
+====
+
+
+
+### PMD
+
+[source, xml]
+----
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-pmd-plugin</artifactId>
+	<version>3.20.0</version>
+	<configuration>
+		<linkXref>true</linkXref>
+		<sourceEncoding>utf-8</sourceEncoding>
+		<minimumTokens>100</minimumTokens>
+		<targetJdk>1.8</targetJdk>
+		<skipEmptyReport>false</skipEmptyReport>
+		<rulesets>
+			<ruleset>/rulesets/java/braces.xml</ruleset>
+			<ruleset>/rulesets/java/naming.xml</ruleset>
+		</rulesets>
+	</configuration>
+</plugin>
+----
+
+### FindBugs/Spotbugs
+
+https://spotbugs.readthedocs.io/en/latest/maven.html[Spotbugs] es la nueva versión de FindBugs.
+
+[source,xml]
+----
+...
+
+	<plugin>
+		<groupId>com.github.spotbugs</groupId>
+		<artifactId>spotbugs-maven-plugin</artifactId>
+		<version>4.7.3.4</version>
+		<configuration>
+			<effort>Max</effort>
+			<threshold>Low</threshold>
+			<failOnError>true</failOnError>
+			<includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>
+			<excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
+			<plugins>
+				<plugin>
+					<groupId>com.h3xstream.findsecbugs</groupId>
+					<artifactId>findsecbugs-plugin</artifactId>
+					<version>1.12.0</version>
+				</plugin>
+			</plugins>
+		</configuration>
+	</plugin>
+...
+----
+
+Se puede integrar la búsqueda de Security Bugs en SpotBugs. Find Security Bugs es un plugin de SpotBugs para seguridad que audita aplicaciones Java web y Android.
+
+Además, junto al archivo pom.xml debes crear estos dos archivos:
+
+.spotbugs-security-include.xml
+[source,xml]
+----
+<FindBugsFilter>
+    <Match>
+        <Bug category="SECURITY,MALICIOUS_CODE,CORRECTNESS,BAD_PRACTICE "/>
+    </Match>
+</FindBugsFilter>
+----
+
+.spotbugs-security-exclude.xml
+[source,xml]
+----
+<FindBugsFilter>
+</FindBugsFilter>
+----
+
+
+El resultado se genera en `.xml` además de en el informe `html`. Su contenido se visualizará en Jenkins.
+
+_Referencia_: https://www.javaworld.com/article/3123117/open-source-java-projects-jenkins-with-docker-part-1.html
+
+## Documentación JavaDoc
+
+El Plugin Javadoc utiliza la herramienta JavaDoc para generar la documentación de las clases del proyecto en formato html. Para ello, hay que ejecutar el goal `javadoc:javadoc`
+
+El resultado se genera en la carpeta `target/site/apidocs`
+
+El plugin de javadoc debe aparecer _repetido_ tanto en el bloque `bulid` como en el bloque `reporting` del `pom.xml`. De esta manera, cuando llamemos a `site` se generará el informe de análisis estático de código y la documentación JavaDoc integrada en el informe. Y cuando llamemos simplemente a `javadoc:javadoc` se generará únicamente la documentación JavaDoc.
+
+[source,xml]
+----
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-javadoc-plugin</artifactId>
+		<version>3.5.0</version>
+		<configuration>
+			<show>private</show>
+		</configuration>
+	</plugin>
+----
+
+=== Diagramas de clases
+
+Al igual que la documentación JavaDoc, con Maven se pueden crear automáticamente *diagramas de clases UML* a partir del código.
+
+Actualiza la configuración del plugin JavaDoc en el archivo `pom.xml` para que genere también los diagramas de clases. Y añade la dependencia al plugin necesario `umldoclet`.
+
+[source,xml,subs="verbatim,quotes"]
+----
+...
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        *<configuration> <1>
+          <!-- <reportOutputDirectory> 
+		  	${project.reporting.outputDirectory}/../../docs 
+		  </reportOutputDirectory> -->
+          <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+          <docletArtifact>
+            <groupId>nl.talsmasoftware</groupId>
+            <artifactId>umldoclet</artifactId>
+            <version>2.1.0</version>
+          </docletArtifact>
+          <additionalOptions>
+            <!-- -umlImageFormat (svg | svg_img | png | eps | none) -->
+			<!-- <additionalOption>-umlImageFormat svg_img,png</additionalOption> -->
+			<additionalOption>-umlImageFormat svg_img</additionalOption>
+			<additionalOption>-private</additionalOption>
+			<!-- <additionalOption>-createPumlFiles</additionalOption> -->
+			<additionalOption>-umlExcludedTypeReferences</additionalOption> <!-- añade metodos toString() y equals() -->
+			<!-- <additionalOption>-umlJavaBeanPropertiesAsFields</additionalOption> -->
+			<!-- <additionalOption>-umlCustomDirective "skinparam classBackgroundColor 
+					LightYellow"</additionalOption> -->
+          </additionalOptions>
+        </configuration>*
+      </plugin>
+    </plugins>
+  </build>
+  *<dependencies> <2>
+    <!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
+    <dependency>
+      <groupId>nl.talsmasoftware</groupId>
+      <artifactId>umldoclet</artifactId>
+      <version>2.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>*
+</project>
+----
+<1> Bloque de configuración del plugin javadoc para que genere los diagrama UML
+<2> Bloque de dependencias necesarias para la generación de los diagrama UML
+
+Guarda los cambios y vuelve a ejecutar maven. Ahora los JavaDoc se crean en la carpeta `docs/apidocs` que deberás proteger en el repositorio. Verás que tus JavaDoc incluyen los diagramas de clases.
+
+[#fig15]
+.Ejemplo de diagramas de clases generados
+image::images/package-classes.svg[Ejemplo de diagramas de clases,width=440,pdfwidth=70%,align="center"]
+
+[IMPORTANT]
+====
+Recuerda que si en Eclipse en el proyecto aparecen errores (archivos en rojo) tras la modificación del `pom.xml`, se debe actualizar el proyecto Maven: sobre el proyecto, botón derecho, _Maven_ > _Update Project_.
+====
+
+
+## OWASP Dependency Check 
+
+Uno de los fallos de seguridad más comunes en las aplicaciones web es el uso de componentes con vulnerabilidades de ciberseguridad conocidas. Esto ocurre cuando no comprobamos el historial de seguridad de las librerías que incorporamos a nuestros proyectos. Con frecuencia, basta con actualizar a las últimas versiones.
+
+Dependency Check de OWASP es una herramienta que permite identificar las dependencias de nuestro proyecto y comprobar si hay alguna de ellas que tiene vulnerabilidades conocidas. Cuando una dependencia tiene identificada una vulnerabilidad, se listarán las entradas asociadas al Common Vulnerability and Exposure (CVE). Las vulnerabilidades y exposiciones comunes (CVE), es una lista de información registrada sobre vulnerabilidades de seguridad conocidas.
+
+La primera ejecución es más lenta, puede tardar más de 5 minutos, porque necesitará descargar todas las referencias de las evidencias de la base de datos National Vulnerability Database (NVD) (https://nvd.nist.gov). 
+
+El siguiente ejemplo configura el plugin en el bloque `reporting` para añadir al informe del proyecto un informe de comprobación de dependencias (agregado al site). Se invocará como parte del goal `site`
+
+[source,xml]
+----
+	<plugin>
+		<groupId>org.owasp</groupId>
+		<artifactId>dependency-check-maven</artifactId>
+		<version>8.2.1</version>
+		<configuration>
+			<skipTestScope>false</skipTestScope>
+			<formats>
+				<format>HTML</format>
+				<format>XML</format>
+			</formats> 
+		</configuration>
+		<reportSets>
+			<reportSet>
+				<reports>
+					<report>aggregate</report>
+				</reports>
+			</reportSet>
+		</reportSets>
+	</plugin>
+----
+
+*Añadiendo dependencias con vulnerabilidades*: Para probar como el plugin detecta dependencias con vulnerabilidades conocidas, añade al pom.xml las siguientes dependencias:
+
+[source,xml]
+----
+	<!-- Examples of vulnerable dependencies --> 
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+		<scope>test</scope>
+	</dependency>
+
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-collections4</artifactId>
+		<version>4.0</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-collections3</artifactId>
+		<version>3.2.2</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+	<dependency>
+		<groupId>org.apache.logging.log4j</groupId>
+		<artifactId>log4j-core</artifactId>
+		<version>2.15.0</version>
+	</dependency>
+----
+
+Tras ello, vuelve a lanzar el análisis y consulta el informe generado: 
+
+image::images/dependency-check-vulnerabilities[dependency-check-vulnerabilities]
+
+:numbered!:
+
+## Entrega
+
+En la tarea correspondiente a la sesion07 debe entregarse un pequeño informe con: las URLs de los repositorios utilizados, que deben coincidir con los de la sesión 05 (recuerda dar acceso al profesor si un repositorio es privado), y una captura de los resultados de los informes generados con Maven en Eclipse o en el terminal de VSCode.
+
+¡RECUERDA! Debes obtener una cobertura del 100% y resolver los defectos encontrados más importantes (no todos) por las herramientas de análisis estático de código.
+
 ## Referencias
 
 

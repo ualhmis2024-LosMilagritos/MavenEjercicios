@@ -681,7 +681,25 @@ pre.rouge {
 <li><a href="#_configurar_el_archivo_pom_xml">2. Configurar el archivo <code>pom.xml</code></a></li>
 <li><a href="#_añadir_las_dependencias_a_junit5">3. Añadir las dependencias a JUnit5</a></li>
 <li><a href="#_lanzar_los_test_desde_maven">4. Lanzar los test desde Maven</a></li>
-<li><a href="#_añadir_el_plugin_de_surefire">5. Añadir el plugin de Surefire</a></li>
+<li><a href="#_surefire_plugin">5. Surefire plugin</a></li>
+<li><a href="#_plugin_de_cobertura">6. Plugin de Cobertura</a></li>
+<li><a href="#_verificar_un_valor_mínimo_de_cobertura">7. Verificar un valor mínimo de cobertura</a></li>
+<li><a href="#_análisis_estático_de_código">8. Análisis estático de Código</a>
+<ul class="sectlevel2">
+<li><a href="#_site">8.1. Site</a></li>
+<li><a href="#_checkstyle">8.2. Checkstyle</a></li>
+<li><a href="#_pmd">8.3. PMD</a></li>
+<li><a href="#_findbugsspotbugs">8.4. FindBugs/Spotbugs</a></li>
+</ul>
+</li>
+<li><a href="#_documentación_javadoc">9. Documentación JavaDoc</a>
+<ul class="sectlevel2">
+<li><a href="#_diagramas_de_clases">9.1. Diagramas de clases</a></li>
+</ul>
+</li>
+<li><a href="#_owasp_dependency_check">10. OWASP Dependency Check</a></li>
+<li><a href="#_entrega">Entrega</a></li>
+<li><a href="#_referencias">Referencias</a></li>
 </ul>
 </li>
 </ul>
@@ -724,7 +742,7 @@ pre.rouge {
 <h1 id="_prerrequisitos" class="sect0">Prerrequisitos</h1>
 <div class="openblock partintro">
 <div class="content">
-El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de la actividad 05 - Pruebas Unitarias en JUnit.
+El guion de esta actividad está actualizado para JUnit 5. Para cada proyecto de la actividad 05 - Pruebas Unitarias en JUnit.
 </div>
 </div>
 <div class="sect1">
@@ -1000,6 +1018,20 @@ El guion de esta actividad está actualizado para JUnit5. Para cada proyecto de 
 <div class="paragraph">
 <p>Por ejemplo, en la fase <strong>compile</strong> del ciclo de vida de Maven, el goal principal es <code>compile</code>, que se utiliza para compilar el código fuente del proyecto y generar archivos <code>.class</code>. En la fase <strong>test</strong>, el goal principal es <code>test</code>, que se utiliza para ejecutar las pruebas unitarias del proyecto. En la fase <strong>package</strong>, el goal principal es <code>package</code>, que se utiliza para empaquetar el proyecto en un archivo <code>.jar</code> o <code>.war</code>. El goal <code>clean</code> se utiliza para limpiar el resultado de la construcción anterior, borrando en la carpeta <code>target</code>.</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>La carpeta <code>target</code> <strong>nunca</strong> se guarda en el respositorio Git, ni se sube a GitHub. Git ignora está carpeta porque se encuentra dentro del archivo <code>.gitignore</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>En cada <em>goal</em> se ejecutan otros <em>goals</em> previos necesarios para que el actual se ejecute correctamente. Por ejemplo, al ejecutar <code>test</code>, Maven ejecuta previamente <code>compile</code> y <code>testCompile</code>. Del mismo modo, <code>package</code> ejecuta previamente los goals <code>compile</code>, <code>testCompile</code> y <code>test</code>.</p>
 </div>
@@ -1075,21 +1107,721 @@ Recuerda que para ejecutar los test con Maven desde el terminal, debes tener ins
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Una vez ejecutada correctamente la construcción con Maven, comprueba en la <strong>salida por consola</strong> que se hayan ejecutando los tests correctamente: número de tests, Passed, Failed, &#8230;&#8203;</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/maven-test-results.png" alt="maven-test-results">
+</div>
+</div>
+<div class="paragraph">
+<p>En caso de que no se estén ejecutando los tests <strong>(Tests run: 0)</strong> el problema es que Maven no está encontrando los tests. Para solucionarlo es necesario configurar el plugin <strong>Surefire</strong>, encargado de los tests unitarios, tal y como se explica en la siguiente sección.</p>
+</div>
+<div class="paragraph">
+<p>Puedes comprobar el resultado de la ejecución de los test de JUnit abriendo el archivo xml generado en la carpeta <code>target/surefire-reports/TEST-….xml</code></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/open-xml-test-junit.png" alt="open-xml-test-junit">
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Si en la consola aparece el siguiente error:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En Eclipse: <em>Window &#8594; Preferences &#8594; Java &#8594; Installed JREs</em>. Comprueba que está marcada una instalación de JDK en lugar de un JRE.</p>
+</div>
+<div class="paragraph">
+<p>Si no tuvieses instalado un JDK, debes instalarlo. Recomendable <strong>JDK 11</strong>. Tras instalarlo, debes reiniciar Eclipse y añadirlo a la lista de Installed JREs.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_añadir_el_plugin_de_surefire">5. Añadir el plugin de Surefire</h2>
+<h2 id="_surefire_plugin">5. Surefire plugin</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>##</p>
+<p>Surefire es el plugin de Maven que se encarga de ejecutar los tests unitarios. Por defecto, Surefire busca los tests en el directorio <code>src/test/java</code> y los ejecuta. Si no se encuentra ningún test, no se ejecuta ninguno. Por eso, si no se ejecutan los tests, es porque Maven no los encuentra.</p>
 </div>
 <div class="paragraph">
-<p>##</p>
+<p>Añade esta configuración del plugin al <code>pom.xml</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;build&gt;</span>
+   <span class="nt">&lt;plugins&gt;</span>
+	...
+	<span class="nt">&lt;plugin&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>3.0.0<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;/plugin&gt;</span>
+	...
+   <span class="nt">&lt;/plugins&gt;</span>
+<span class="nt">&lt;/build&gt;</span></code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p><mark>
-</mark> Referencias</p>
+<p>De forma predeterminada, Surefire incluye automáticamente todos los archivos de pruebas que cumplen las siguientes reglas de nomenclatura:</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>**/Test*.java</code>, incluye todos los archivos .java que empiezan por <code>Test</code>.</p>
+</li>
+<li>
+<p><code>**/*Test.java</code>, archivos .java que finalizan en <code>Test</code>.</p>
+</li>
+<li>
+<p><code>**/*Tests.java</code>, archivos .java que finalizan en <code>Tests</code>.</p>
+</li>
+<li>
+<p><code>**/*TestCase.java</code>, archivos .java que finalizan en <code>TestCase</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Si tus clases de test no siguen esta nomenclatura, debes configurar el plugin para especificar qué archivos debe incluir:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">...
+	<span class="nt">&lt;plugin&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>3.0.0<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;configuration&gt;</span>
+            <span class="nt">&lt;includes&gt;</span>
+                <span class="nt">&lt;include&gt;</span>Sample.java<span class="nt">&lt;/include&gt;</span>
+            <span class="nt">&lt;/includes&gt;</span>
+		<span class="nt">&lt;/configuration&gt;</span>
+	<span class="nt">&lt;/plugin&gt;</span>
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Y si deseas excluir algún archivo de test, debes añadirlo a la lista de exclusiones:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">...
+	<span class="nt">&lt;plugin&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>3.0.0<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;configuration&gt;</span>
+            <span class="nt">&lt;excludes&gt;</span>
+              <span class="nt">&lt;exclude&gt;</span>**/TestCircle.java<span class="nt">&lt;/exclude&gt;</span>
+              <span class="nt">&lt;exclude&gt;</span>**/TestSquare.java<span class="nt">&lt;/exclude&gt;</span>
+            <span class="nt">&lt;/excludes&gt;</span>
+          <span class="nt">&lt;/configuration&gt;</span>
+	<span class="nt">&lt;/plugin&gt;</span>
+...</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Más info en <a href="https://maven.apache.org/surefire/maven-surefire-plugin/examples/inclusion-exclusion.html">Inclusion/Exclusion of Tests</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>La siguiente <a href="https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit-platform.html#external-extensions-for-the-plugin">extensión</a> muestra en la consola una vista en forma de árbol de las pruebas unitarias . Esto está relacionado con las pruebas JUnit5:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">...
+	<span class="nt">&lt;plugin&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>3.0.0<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;dependencies&gt;</span>
+			<span class="nt">&lt;dependency&gt;</span>
+				<span class="nt">&lt;groupId&gt;</span>me.fabriciorby<span class="nt">&lt;/groupId&gt;</span>
+				<span class="nt">&lt;artifactId&gt;</span>maven-surefire-junit5-tree-reporter<span class="nt">&lt;/artifactId&gt;</span>
+				<span class="nt">&lt;version&gt;</span>0.1.0<span class="nt">&lt;/version&gt;</span>
+			<span class="nt">&lt;/dependency&gt;</span>
+		<span class="nt">&lt;/dependencies&gt;</span>
+		<span class="nt">&lt;configuration&gt;</span>
+			<span class="nt">&lt;reportFormat&gt;</span>plain<span class="nt">&lt;/reportFormat&gt;</span>
+			<span class="nt">&lt;consoleOutputReporter&gt;</span>
+				<span class="nt">&lt;disable&gt;</span>true<span class="nt">&lt;/disable&gt;</span>
+			<span class="nt">&lt;/consoleOutputReporter&gt;</span>
+			<span class="nt">&lt;statelessTestsetInfoReporter</span> <span class="na">implementation=</span><span class="s">"org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter"</span> <span class="nt">/&gt;</span>
+			<span class="nt">&lt;argLine&gt;</span>@{argLine} -Dfile.encoding=UTF-8<span class="nt">&lt;/argLine&gt;</span>
+			<span class="c">&lt;!-- -Dfile.encoding=UTF-8 necesario para que pasen los tests con UTF-8 --&gt;</span>
+			<span class="c">&lt;!-- @{argLine} necesario para Jacoco !!! --&gt;</span>
+		<span class="nt">&lt;/configuration&gt;</span>
+	<span class="nt">&lt;/plugin&gt;</span>
+
+...</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_plugin_de_cobertura">6. Plugin de Cobertura</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para el cálculo de la cobertura desde Maven vamos a usar el plugin JaCoCo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;project...&gt;</span>
+...
+<span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+		<span class="nt">&lt;plugin&gt;</span>
+			<span class="nt">&lt;groupId&gt;</span>org.jacoco<span class="nt">&lt;/groupId&gt;</span>
+			<span class="nt">&lt;artifactId&gt;</span>jacoco-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+			<span class="nt">&lt;version&gt;</span>0.8.8<span class="nt">&lt;/version&gt;</span>
+			<span class="nt">&lt;executions&gt;</span>
+				<span class="nt">&lt;execution&gt;</span>
+					<span class="nt">&lt;id&gt;</span>prepare-agent<span class="nt">&lt;/id&gt;</span>
+					<span class="nt">&lt;goals&gt;</span>
+						<span class="nt">&lt;goal&gt;</span>prepare-agent<span class="nt">&lt;/goal&gt;</span>
+					<span class="nt">&lt;/goals&gt;</span>
+				<span class="nt">&lt;/execution&gt;</span>
+				<span class="c">&lt;!-- attached to Maven test phase --&gt;</span>
+				<span class="nt">&lt;execution&gt;</span>
+					<span class="nt">&lt;id&gt;</span>report<span class="nt">&lt;/id&gt;</span>
+					<span class="nt">&lt;phase&gt;</span>test<span class="nt">&lt;/phase&gt;</span>
+					<span class="nt">&lt;goals&gt;</span>
+						<span class="nt">&lt;goal&gt;</span>report<span class="nt">&lt;/goal&gt;</span>
+					<span class="nt">&lt;/goals&gt;</span>
+				<span class="nt">&lt;/execution&gt;</span>
+			<span class="nt">&lt;/executions&gt;</span>
+		<span class="nt">&lt;/plugin&gt;</span>
+	<span class="nt">&lt;/plugins&gt;</span>
+<span class="nt">&lt;/build&gt;</span>
+...
+<span class="nt">&lt;/project&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Para llamar al cálculo de cobertura desde la línea de comandos, ejecuta el siguiente comando:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>mvn clean package</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Para ver el informe de cobertura, abre el archivo <code>target/site/jacoco/index.html</code> con el navegador web.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/informe-jacoco.png" alt="informe-jacoco">
+</div>
+</div>
+<div class="paragraph">
+<p>Puedes navegar y ver la cobertura linea a linea. Recuerda los colores:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/cobertura-resultados-ejercicio.png" alt="cobertura-resultados-ejercicio">
+</div>
+</div>
+<div class="paragraph">
+<p>Puedes verificar que los resultados de la cobertura desde Maven con JaCoCo son iguales que los resultados de la cobertura obtenidos por el plugin EclEmma de Eclipse.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_verificar_un_valor_mínimo_de_cobertura">7. Verificar un valor mínimo de cobertura</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Además, se puede añadir una regla de verificación para que la construcción solamente de éxito si la cobertura es superior a un porcentaje mínimo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">...
+			<span class="c">&lt;!-- Add this checking: coverage &gt;= 90% --&gt;</span>
+			<span class="nt">&lt;execution&gt;</span>
+				<span class="nt">&lt;id&gt;</span>jacoco-check<span class="nt">&lt;/id&gt;</span>
+				<span class="nt">&lt;goals&gt;</span>
+					<span class="nt">&lt;goal&gt;</span>check<span class="nt">&lt;/goal&gt;</span>
+				<span class="nt">&lt;/goals&gt;</span>
+				<span class="nt">&lt;configuration&gt;</span>
+					<span class="nt">&lt;rules&gt;</span>
+						<span class="nt">&lt;rule&gt;</span>
+							<span class="nt">&lt;element&gt;</span>PACKAGE<span class="nt">&lt;/element&gt;</span>
+							<span class="nt">&lt;limits&gt;</span>
+								<span class="nt">&lt;limit&gt;</span>
+									<span class="nt">&lt;counter&gt;</span>LINE<span class="nt">&lt;/counter&gt;</span>
+									<span class="nt">&lt;value&gt;</span>COVEREDRATIO<span class="nt">&lt;/value&gt;</span>
+									<span class="nt">&lt;minimum&gt;</span>0.9<span class="nt">&lt;/minimum&gt;</span>
+								<span class="nt">&lt;/limit&gt;</span>
+							<span class="nt">&lt;/limits&gt;</span>
+						<span class="nt">&lt;/rule&gt;</span>
+					<span class="nt">&lt;/rules&gt;</span>
+				<span class="nt">&lt;/configuration&gt;</span>
+			<span class="nt">&lt;/execution&gt;</span>
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Si además quieres que se comprueben las reglas de verificación, ejecuta el siguiente los goals <code>clean</code> y <code>verify</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>mvn clean verify</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Si no se alcanza el mínimo, en este caso 90%, por consola se muestra el siguiente error:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/jacoco-check-failure.png" alt="JaCoco check failure">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Más info en <a href="https://dzone.com/articles/reporting-code-coverage-using-maven-and-jacoco-plu" class="bare">https://dzone.com/articles/reporting-code-coverage-using-maven-and-jacoco-plu</a></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_análisis_estático_de_código">8. Análisis estático de Código</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para mantener o aumentar la calidad de nuestro código debemos ayudarnos, entre otras herramientas, de técnicas de análisis estático de código que, básicamente, se encargan de buscar defectos en el código sin necesidad de que este se ejecute. En Java las más habituales son <strong>Checkstyle</strong>, <strong>FindBugs</strong> y <strong>PMD</strong>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://maven.apache.org/plugins/maven-checkstyle-plugin/">Checkstyle</a> valida el estilo del código respecto al estilo oficial de Java.</p>
+</li>
+<li>
+<p><a href="http://gleclaire.github.io/findbugs-maven-plugin/">FindBugs/Spotbugs</a> busca errores comunes.</p>
+</li>
+<li>
+<p><a href="https://maven.apache.org/plugins/maven-pmd-plugin/">PMD</a> valida reglas de construcción y compilación.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_site">8.1. Site</h3>
+<div class="paragraph">
+<p>El plugin Maven Site genera un sitio web con documentación del proyecto. Se invoca con el goal: <code>site</code>. Hay que añadirlo en el bloque <code>build</code> y en el bloque <code>reporting</code> del <code>pom.xml</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;project&gt;</span>
+  ...
+  <span class="nt">&lt;build&gt;</span>
+  ...
+	<span class="nt">&lt;plugin&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>maven-site-plugin<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>4.0.0-M7<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;configuration&gt;</span>
+			<span class="nt">&lt;locales&gt;</span>es,en<span class="nt">&lt;/locales&gt;</span>
+		<span class="nt">&lt;/configuration&gt;</span>
+	<span class="nt">&lt;/plugin&gt;</span>
+	  ...
+  <span class="nt">&lt;/build&gt;</span>
+   <span class="nt">&lt;reporting&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+		<span class="nt">&lt;plugin&gt;</span>
+			<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+			<span class="nt">&lt;artifactId&gt;</span>maven-site-plugin<span class="nt">&lt;/artifactId&gt;</span>
+			<span class="nt">&lt;version&gt;</span>4.0.0-M7<span class="nt">&lt;/version&gt;</span>
+			<span class="nt">&lt;configuration&gt;</span>
+				<span class="nt">&lt;locales&gt;</span>es,en<span class="nt">&lt;/locales&gt;</span>
+			<span class="nt">&lt;/configuration&gt;</span>
+		<span class="nt">&lt;/plugin&gt;</span>
+        ...
+	<span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/reporting&gt;</span>
+  ...
+<span class="nt">&lt;/project&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_checkstyle">8.2. Checkstyle</h3>
+<div class="paragraph">
+<p>Para configurar estas 3 herramientas en Maven, dentro del <code>pom.xml</code> se añaden en el bloque <code>reporting</code> que se encarga de generar los informes de las herramientas de análisis estático de código. Utiliza el plugin <code>site</code> de Maven.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;project&gt;</span>
+  ...
+  <span class="nt">&lt;/build&gt;</span>
+  <span class="nt">&lt;reporting&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+		...
+        <span class="nt">&lt;plugin&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>maven-checkstyle-plugin<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>3.1.1<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+
+		<span class="nt">&lt;plugin&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>maven-jxr-plugin<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>3.3.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/reporting&gt;</span>
+  ...
+<span class="nt">&lt;/project&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Checkstyle se invoca simplemente con el goal: <code>checkstyle:checkstyle</code></p>
+</div>
+<div class="paragraph">
+<p>Sin embargo, puesto que vamos a generar varios informes de análisis estático de código, y con el objetivo de que todos se generen correctamente, hay que llamar a los 3 plugins desde un único goal: <code>site</code>.</p>
+</div>
+<div class="paragraph">
+<p>En <code>target/site/</code> se genera el archivo <code>index.html</code> que será el punto de inicio, y otro <code>checkstyle.html</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Filtro de reglas: Checkstyle permite seleccionar una lista reglas, de archivos y rango de lineas que <strong>no se incorporarán</strong> al informe (conocido como <a href="https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/suppressions-filter.html#using-a-suppressions-filter"><em>suppressions filter</em></a>).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pmd">8.3. PMD</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>maven-pmd-plugin<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>3.20.0<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;configuration&gt;</span>
+		<span class="nt">&lt;linkXref&gt;</span>true<span class="nt">&lt;/linkXref&gt;</span>
+		<span class="nt">&lt;sourceEncoding&gt;</span>utf-8<span class="nt">&lt;/sourceEncoding&gt;</span>
+		<span class="nt">&lt;minimumTokens&gt;</span>100<span class="nt">&lt;/minimumTokens&gt;</span>
+		<span class="nt">&lt;targetJdk&gt;</span>1.8<span class="nt">&lt;/targetJdk&gt;</span>
+		<span class="nt">&lt;skipEmptyReport&gt;</span>false<span class="nt">&lt;/skipEmptyReport&gt;</span>
+		<span class="nt">&lt;rulesets&gt;</span>
+			<span class="nt">&lt;ruleset&gt;</span>/rulesets/java/braces.xml<span class="nt">&lt;/ruleset&gt;</span>
+			<span class="nt">&lt;ruleset&gt;</span>/rulesets/java/naming.xml<span class="nt">&lt;/ruleset&gt;</span>
+		<span class="nt">&lt;/rulesets&gt;</span>
+	<span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_findbugsspotbugs">8.4. FindBugs/Spotbugs</h3>
+<div class="paragraph">
+<p><a href="https://spotbugs.readthedocs.io/en/latest/maven.html">Spotbugs</a> es la nueva versión de FindBugs.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">...
+
+	<span class="nt">&lt;plugin&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>com.github.spotbugs<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>spotbugs-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>4.7.3.4<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;configuration&gt;</span>
+			<span class="nt">&lt;effort&gt;</span>Max<span class="nt">&lt;/effort&gt;</span>
+			<span class="nt">&lt;threshold&gt;</span>Low<span class="nt">&lt;/threshold&gt;</span>
+			<span class="nt">&lt;failOnError&gt;</span>true<span class="nt">&lt;/failOnError&gt;</span>
+			<span class="nt">&lt;includeFilterFile&gt;</span>${session.executionRootDirectory}/spotbugs-security-include.xml<span class="nt">&lt;/includeFilterFile&gt;</span>
+			<span class="nt">&lt;excludeFilterFile&gt;</span>${session.executionRootDirectory}/spotbugs-security-exclude.xml<span class="nt">&lt;/excludeFilterFile&gt;</span>
+			<span class="nt">&lt;plugins&gt;</span>
+				<span class="nt">&lt;plugin&gt;</span>
+					<span class="nt">&lt;groupId&gt;</span>com.h3xstream.findsecbugs<span class="nt">&lt;/groupId&gt;</span>
+					<span class="nt">&lt;artifactId&gt;</span>findsecbugs-plugin<span class="nt">&lt;/artifactId&gt;</span>
+					<span class="nt">&lt;version&gt;</span>1.12.0<span class="nt">&lt;/version&gt;</span>
+				<span class="nt">&lt;/plugin&gt;</span>
+			<span class="nt">&lt;/plugins&gt;</span>
+		<span class="nt">&lt;/configuration&gt;</span>
+	<span class="nt">&lt;/plugin&gt;</span>
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Se puede integrar la búsqueda de Security Bugs en SpotBugs. Find Security Bugs es un plugin de SpotBugs para seguridad que audita aplicaciones Java web y Android.</p>
+</div>
+<div class="paragraph">
+<p>Además, junto al archivo pom.xml debes crear estos dos archivos:</p>
+</div>
+<div class="listingblock">
+<div class="title">spotbugs-security-include.xml</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;FindBugsFilter&gt;</span>
+    <span class="nt">&lt;Match&gt;</span>
+        <span class="nt">&lt;Bug</span> <span class="na">category=</span><span class="s">"SECURITY,MALICIOUS_CODE,CORRECTNESS,BAD_PRACTICE "</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/Match&gt;</span>
+<span class="nt">&lt;/FindBugsFilter&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">spotbugs-security-exclude.xml</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;FindBugsFilter&gt;</span>
+<span class="nt">&lt;/FindBugsFilter&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El resultado se genera en <code>.xml</code> además de en el informe <code>html</code>. Su contenido se visualizará en Jenkins.</p>
+</div>
+<div class="paragraph">
+<p><em>Referencia</em>: <a href="https://www.javaworld.com/article/3123117/open-source-java-projects-jenkins-with-docker-part-1.html" class="bare">https://www.javaworld.com/article/3123117/open-source-java-projects-jenkins-with-docker-part-1.html</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_documentación_javadoc">9. Documentación JavaDoc</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>El Plugin Javadoc utiliza la herramienta JavaDoc para generar la documentación de las clases del proyecto en formato html. Para ello, hay que ejecutar el goal <code>javadoc:javadoc</code></p>
+</div>
+<div class="paragraph">
+<p>El resultado se genera en la carpeta <code>target/site/apidocs</code></p>
+</div>
+<div class="paragraph">
+<p>El plugin de javadoc debe aparecer <em>repetido</em> tanto en el bloque <code>bulid</code> como en el bloque <code>reporting</code> del <code>pom.xml</code>. De esta manera, cuando llamemos a <code>site</code> se generará el informe de análisis estático de código y la documentación JavaDoc integrada en el informe. Y cuando llamemos simplemente a <code>javadoc:javadoc</code> se generará únicamente la documentación JavaDoc.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">	<span class="nt">&lt;plugin&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>maven-javadoc-plugin<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>3.5.0<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;configuration&gt;</span>
+			<span class="nt">&lt;show&gt;</span>private<span class="nt">&lt;/show&gt;</span>
+		<span class="nt">&lt;/configuration&gt;</span>
+	<span class="nt">&lt;/plugin&gt;</span></code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_diagramas_de_clases">9.1. Diagramas de clases</h3>
+<div class="paragraph">
+<p>Al igual que la documentación JavaDoc, con Maven se pueden crear automáticamente <strong>diagramas de clases UML</strong> a partir del código.</p>
+</div>
+<div class="paragraph">
+<p>Actualiza la configuración del plugin JavaDoc en el archivo <code>pom.xml</code> para que genere también los diagramas de clases. Y añade la dependencia al plugin necesario <code>umldoclet</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">...
+      <span class="nt">&lt;plugin&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>maven-javadoc-plugin<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>3.5.0<span class="nt">&lt;/version&gt;</span>
+        <strong><span class="nt">&lt;configuration&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+          <span class="c">&lt;!-- &lt;reportOutputDirectory&gt;
+		  	${project.reporting.outputDirectory}/../../docs
+		  &lt;/reportOutputDirectory&gt; --&gt;</span>
+          <span class="nt">&lt;doclet&gt;</span>nl.talsmasoftware.umldoclet.UMLDoclet<span class="nt">&lt;/doclet&gt;</span>
+          <span class="nt">&lt;docletArtifact&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>nl.talsmasoftware<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>umldoclet<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>2.1.0<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;/docletArtifact&gt;</span>
+          <span class="nt">&lt;additionalOptions&gt;</span>
+            <span class="c">&lt;!-- -umlImageFormat (svg | svg_img | png | eps | none) --&gt;</span>
+			<span class="c">&lt;!-- &lt;additionalOption&gt;-umlImageFormat svg_img,png&lt;/additionalOption&gt; --&gt;</span>
+			<span class="nt">&lt;additionalOption&gt;</span>-umlImageFormat svg_img<span class="nt">&lt;/additionalOption&gt;</span>
+			<span class="nt">&lt;additionalOption&gt;</span>-private<span class="nt">&lt;/additionalOption&gt;</span>
+			<span class="c">&lt;!-- &lt;additionalOption&gt;-createPumlFiles&lt;/additionalOption&gt; --&gt;</span>
+			<span class="nt">&lt;additionalOption&gt;</span>-umlExcludedTypeReferences<span class="nt">&lt;/additionalOption&gt;</span> <span class="c">&lt;!-- añade metodos toString() y equals() --&gt;</span>
+			<span class="c">&lt;!-- &lt;additionalOption&gt;-umlJavaBeanPropertiesAsFields&lt;/additionalOption&gt; --&gt;</span>
+			<span class="c">&lt;!-- &lt;additionalOption&gt;-umlCustomDirective "skinparam classBackgroundColor
+					LightYellow"&lt;/additionalOption&gt; --&gt;</span>
+          <span class="nt">&lt;/additionalOptions&gt;</span>
+        <span class="nt">&lt;/configuration&gt;</span></strong>
+      <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/build&gt;</span>
+  <strong><span class="nt">&lt;dependencies&gt;</span> <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="c">&lt;!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet --&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>nl.talsmasoftware<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>umldoclet<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>2.1.0<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span></strong>
+<span class="nt">&lt;/project&gt;</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Bloque de configuración del plugin javadoc para que genere los diagrama UML</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Bloque de dependencias necesarias para la generación de los diagrama UML</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Guarda los cambios y vuelve a ejecutar maven. Ahora los JavaDoc se crean en la carpeta <code>docs/apidocs</code> que deberás proteger en el repositorio. Verás que tus JavaDoc incluyen los diagramas de clases.</p>
+</div>
+<div id="fig15" class="imageblock text-center">
+<div class="content">
+<img src="images/package-classes.svg" alt="Ejemplo de diagramas de clases" width="440">
+</div>
+<div class="title">Figure 2. Ejemplo de diagramas de clases generados</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Recuerda que si en Eclipse en el proyecto aparecen errores (archivos en rojo) tras la modificación del <code>pom.xml</code>, se debe actualizar el proyecto Maven: sobre el proyecto, botón derecho, <em>Maven</em> &gt; <em>Update Project</em>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_owasp_dependency_check">10. OWASP Dependency Check</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Uno de los fallos de seguridad más comunes en las aplicaciones web es el uso de componentes con vulnerabilidades de ciberseguridad conocidas. Esto ocurre cuando no comprobamos el historial de seguridad de las librerías que incorporamos a nuestros proyectos. Con frecuencia, basta con actualizar a las últimas versiones.</p>
+</div>
+<div class="paragraph">
+<p>Dependency Check de OWASP es una herramienta que permite identificar las dependencias de nuestro proyecto y comprobar si hay alguna de ellas que tiene vulnerabilidades conocidas. Cuando una dependencia tiene identificada una vulnerabilidad, se listarán las entradas asociadas al Common Vulnerability and Exposure (CVE). Las vulnerabilidades y exposiciones comunes (CVE), es una lista de información registrada sobre vulnerabilidades de seguridad conocidas.</p>
+</div>
+<div class="paragraph">
+<p>La primera ejecución es más lenta, puede tardar más de 5 minutos, porque necesitará descargar todas las referencias de las evidencias de la base de datos National Vulnerability Database (NVD) (<a href="https://nvd.nist.gov" class="bare">https://nvd.nist.gov</a>).</p>
+</div>
+<div class="paragraph">
+<p>El siguiente ejemplo configura el plugin en el bloque <code>reporting</code> para añadir al informe del proyecto un informe de comprobación de dependencias (agregado al site). Se invocará como parte del goal <code>site</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">	<span class="nt">&lt;plugin&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.owasp<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>dependency-check-maven<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>8.2.1<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;configuration&gt;</span>
+			<span class="nt">&lt;skipTestScope&gt;</span>false<span class="nt">&lt;/skipTestScope&gt;</span>
+			<span class="nt">&lt;formats&gt;</span>
+				<span class="nt">&lt;format&gt;</span>HTML<span class="nt">&lt;/format&gt;</span>
+				<span class="nt">&lt;format&gt;</span>XML<span class="nt">&lt;/format&gt;</span>
+			<span class="nt">&lt;/formats&gt;</span>
+		<span class="nt">&lt;/configuration&gt;</span>
+		<span class="nt">&lt;reportSets&gt;</span>
+			<span class="nt">&lt;reportSet&gt;</span>
+				<span class="nt">&lt;reports&gt;</span>
+					<span class="nt">&lt;report&gt;</span>aggregate<span class="nt">&lt;/report&gt;</span>
+				<span class="nt">&lt;/reports&gt;</span>
+			<span class="nt">&lt;/reportSet&gt;</span>
+		<span class="nt">&lt;/reportSets&gt;</span>
+	<span class="nt">&lt;/plugin&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Añadiendo dependencias con vulnerabilidades</strong>: Para probar como el plugin detecta dependencias con vulnerabilidades conocidas, añade al pom.xml las siguientes dependencias:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml">	<span class="c">&lt;!-- Examples of vulnerable dependencies --&gt;</span>
+	<span class="nt">&lt;dependency&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>4.12<span class="nt">&lt;/version&gt;</span>
+		<span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+	<span class="nt">&lt;/dependency&gt;</span>
+
+	<span class="nt">&lt;dependency&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.commons<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>commons-collections4<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>4.0<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;/dependency&gt;</span>
+
+	<span class="nt">&lt;dependency&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.commons<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>commons-collections3<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>3.2.2<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;/dependency&gt;</span>
+
+	<span class="c">&lt;!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core --&gt;</span>
+	<span class="nt">&lt;dependency&gt;</span>
+		<span class="nt">&lt;groupId&gt;</span>org.apache.logging.log4j<span class="nt">&lt;/groupId&gt;</span>
+		<span class="nt">&lt;artifactId&gt;</span>log4j-core<span class="nt">&lt;/artifactId&gt;</span>
+		<span class="nt">&lt;version&gt;</span>2.15.0<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Tras ello, vuelve a lanzar el análisis y consulta el informe generado:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/dependency-check-vulnerabilities" alt="dependency-check-vulnerabilities">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_entrega">Entrega</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En la tarea correspondiente a la sesion07 debe entregarse un pequeño informe con: las URLs de los repositorios utilizados, que deben coincidir con los de la sesión 05 (recuerda dar acceso al profesor si un repositorio es privado), y una captura de los resultados de los informes generados con Maven en Eclipse o en el terminal de VSCode.</p>
+</div>
+<div class="paragraph">
+<p>¡RECUERDA! Debes obtener una cobertura del 100% y resolver los defectos encontrados más importantes (no todos) por las herramientas de análisis estático de código.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_referencias">Referencias</h2>
+<div class="sectionbody">
+
 </div>
 </div>
 </div>
